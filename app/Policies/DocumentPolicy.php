@@ -5,10 +5,15 @@ namespace App\Policies;
 use App\Models\Document;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class DocumentPolicy
 {
     use HandlesAuthorization;
+
+    protected $messages = [
+        'deny' => 'You do not own this document.'
+    ];
 
     /**
      * Determine whether the user can view any models.
@@ -30,7 +35,9 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document)
     {
-        return $user->id == $document->user_id;
+        return $user->id == $document->user_id
+            ? Response::allow()
+            : Response::deny($this->messages['deny']);
     }
 
     /**
@@ -53,7 +60,9 @@ class DocumentPolicy
      */
     public function update(User $user, Document $document)
     {
-        return $user->id == $document->user_id;
+        return $user->id == $document->user_id
+            ? Response::allow()
+            : Response::deny($this->messages['deny']);;
     }
 
     /**
@@ -65,7 +74,9 @@ class DocumentPolicy
      */
     public function delete(User $user, Document $document)
     {
-        return $user->id == $document->user_id;
+        return $user->id == $document->user_id
+            ? Response::allow()
+            : Response::deny($this->messages['deny']);;
     }
 
     /**
@@ -77,7 +88,9 @@ class DocumentPolicy
      */
     public function restore(User $user, Document $document)
     {
-        return $user->id == $document->user_id;
+        return $user->id == $document->user_id
+            ? Response::allow()
+            : Response::deny($this->messages['deny']);;
     }
 
     /**
@@ -89,6 +102,8 @@ class DocumentPolicy
      */
     public function forceDelete(User $user, Document $document)
     {
-        return $user->id == $document->user_id;
+        return $user->id == $document->user_id
+            ? Response::allow()
+            : Response::deny($this->messages['deny']);;
     }
 }
