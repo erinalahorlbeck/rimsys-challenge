@@ -42,4 +42,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /********************** ELOQUENT RELATIONSHIPS ****************************/
+
+    protected function documents() {
+        return $this->hasMany(Document::class);
+    }
 }

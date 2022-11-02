@@ -18,4 +18,10 @@ class Document extends Model
         'title',
         'body',
     ];
+
+    /********************** ELOQUENT RELATIONSHIPS ****************************/
+
+    protected function user() {
+        return $this->belongsTo(User::class);
+    }
 }
