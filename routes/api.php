@@ -27,13 +27,17 @@ Route::prefix('v1')->group(function() {
         return $request->user();
     });
 
-    // Route::post('/login', [AuthApiController::class, 'login']);
+    // Public
+    Route::post('/login', [AuthApiController::class, 'login']);
+    Route::post('/register', [AuthApiController::class, 'register']);
 
-    Route::resource('users', UserApiController::class);
-
-    Route::resource('documents', DocumentApiController::class);
-
-    Route::get('/users/{user}/documents/{document}', function(User $user, Document $document) {
-        return $document;
-    })->scopeBindings();
+    // Protected
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::resource('users', UserApiController::class);
+        Route::resource('documents', DocumentApiController::class);
+        Route::get('/users/{user}/documents/{document}', function(User $user, Document $document) {
+            return $document;
+        })->scopeBindings();
+        Route::post('/logout', [AuthApiController::class, 'logout']);
+    });
 });
