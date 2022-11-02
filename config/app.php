@@ -212,4 +212,15 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    /*
+    |---------------------------------------------------------------------------
+    | Current API Version
+    |---------------------------------------------------------------------------
+    |
+    | The default API version to use when no version is specified in api calls.
+    |
+    */
+
+   'api_version'  => '1',
+
 ];
