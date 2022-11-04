@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->boolean('is_admin')->default(false);
-            $table->string('password');
-            $table->rememberToken();
+            $table->foreignId('user_id');
+            $table->string('title')->default('Untitled');
+            // The 'body' column below could have been a json() column, to allow
+            // for dynamic metadata from the user.
+            $table->longText('body')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('documents');
     }
 };

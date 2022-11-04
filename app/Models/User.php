@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
     ];
@@ -29,6 +29,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
+        'is_admin',
         'password',
         'remember_token',
     ];
@@ -41,4 +42,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /********************** ELOQUENT RELATIONSHIPS ****************************/
+
+    protected function documents() {
+        return $this->hasMany(Document::class);
+    }
 }
