@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ApiLoginRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthApiController extends ApiController
@@ -15,9 +17,20 @@ class AuthApiController extends ApiController
      *
      * @return JsonResponse
      */
-    public function login()
+    public function login(ApiLoginRequest $request)
     {
-        return response()->json('Login method.');
+        $request->validated($request->all());
+
+        if (!Auth::attempt($request->only(['email', 'password'])))
+            return $this->error('', 'Invalid login', 401);
+
+        $user = User::where('email', $request->input('email'))
+            ->get()->first();
+
+        return $this->success([
+            'user'  => $user,
+            'token' => $user->createToken('Api Token for ' . $user->username)->plainTextToken,
+        ]);
     }
 
     /**

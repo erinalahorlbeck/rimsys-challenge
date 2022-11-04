@@ -28,16 +28,18 @@ Route::prefix('v1')->group(function() {
     });
 
     // Public
-    Route::post('/login', [AuthApiController::class, 'login']);
-    Route::post('/register', [AuthApiController::class, 'register']);
+    Route::name('login')->post('/login', [AuthApiController::class, 'login']);
+    Route::name('register')->post('/register', [AuthApiController::class, 'register']);
 
     // Protected
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::resource('users', UserApiController::class);
         Route::resource('documents', DocumentApiController::class);
+        // Example of one of several similar types of routes for CRUD on a
+        // document linked to another user.
         Route::get('/users/{user}/documents/{document}', function(User $user, Document $document) {
             return $document;
         })->scopeBindings();
-        Route::post('/logout', [AuthApiController::class, 'logout']);
+        Route::name('logout')->post('/logout', [AuthApiController::class, 'logout']);
     });
 });
