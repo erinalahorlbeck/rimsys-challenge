@@ -31,7 +31,48 @@ tags:
     description: Operations about documents
 
 paths:
+  /user:
+    get:
+      tags:
+        - user
+      summary: Retrieve currently authenticated user
+      description: Retrieves the currently authenticated user. To retrieve another user, use the /users or /users/{user-id} endpoint (requires admin privileges)
+      operationId: getAuthUser
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/User'
+
   /users:
+    get:
+      tags:
+        - user
+      summary: Retrieve a list of users
+      description: Retrieves a list of users (requires admin privileges)
+      operationId: getUsers
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/User'
+
     post:
       tags:
         - user
@@ -60,66 +101,13 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/User'
-  # /users/login:
-  #   post:
-  #     tags:
-  #       - user
-  #     summary: Logs user into the system
-  #     description: ''
-  #     operationId: loginUser
-  #     parameters:
-  #       - name: username
-  #         in: query
-  #         description: The user name for login
-  #         required: false
-  #         schema:
-  #           type: string
-  #       - name: password
-  #         in: query
-  #         description: The password for login in clear text
-  #         required: false
-  #         schema:
-  #           type: string
-  #     responses:
-  #       '200':
-  #         description: successful operation
-  #         headers:
-  #           X-Rate-Limit:
-  #             description: calls per hour allowed by the user
-  #             schema:
-  #               type: integer
-  #               format: int32
-  #           X-Expires-After:
-  #             description: date in UTC when token expires
-  #             schema:
-  #               type: string
-  #               format: date-time
-  #         content:
-  #           application/xml:
-  #             schema:
-  #               type: string
-  #           application/json:
-  #             schema:
-  #               type: string
-  #       '400':
-  #         description: Invalid username/password supplied
-  # /users/logout:
-  #   get:
-  #     tags:
-  #       - user
-  #     summary: Logs out current logged in user session
-  #     description: ''
-  #     operationId: logoutUser
-  #     parameters: []
-  #     responses:
-  #       default:
-  #         description: successful operation
+
   /users/{user-id}:
     get:
       tags:
         - user
       summary: Get user by user id
-      description: ''
+      description: Get a user by user id (requires admin privileges unless own user)
       operationId: getUserByName
       parameters:
         - name: user-id
